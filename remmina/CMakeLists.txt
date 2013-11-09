@@ -132,6 +132,8 @@ if(GTK3_FOUND)
 	endif()
 endif()
 
+target_link_libraries(remmina -lX11 -lgio-2.0 -lgmodule-2.0 -lgobject-2.0 -lgthread-2.0 -lpthread)
+
 add_subdirectory(po)
 add_subdirectory(icons)
 add_subdirectory(desktop)
