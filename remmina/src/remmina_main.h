@@ -120,6 +120,8 @@ GtkWidget* remmina_main_new(void);
 /* Get the current main window or NULL if not initialized */
 GtkWindow* remmina_main_get_window(void);
 
+void remmina_main_save_before_quit(void);
+
 G_END_DECLS
 
 #endif  /* __REMMINAMAIN_H__  */

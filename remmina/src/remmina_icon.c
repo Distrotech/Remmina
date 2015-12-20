@@ -65,7 +65,7 @@ typedef struct _RemminaIcon
 static RemminaIcon remmina_icon =
 { 0 };
 
-static void remmina_icon_destroy(void)
+void remmina_icon_destroy(void)
 {
 	TRACE_CALL("remmina_icon_destroy");
 	if (remmina_icon.icon)
@@ -169,7 +169,7 @@ static void remmina_icon_populate_additional_menu_item(GtkWidget *menu)
 	menuitem = gtk_menu_item_new_with_mnemonic(_("_Quit"));
 	gtk_widget_show(menuitem);
 	gtk_menu_shell_append(GTK_MENU_SHELL(menu), menuitem);
-	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(remmina_icon_destroy), NULL);
+	g_signal_connect(G_OBJECT(menuitem), "activate", G_CALLBACK(remmina_exec_exitremmina), NULL);
 }
 
 static void remmina_icon_on_launch_item(RemminaAppletMenu *menu, RemminaAppletMenuItem *menuitem, gpointer data)

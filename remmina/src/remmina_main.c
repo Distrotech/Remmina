@@ -51,6 +51,7 @@
 #include "remmina_log.h"
 #include "remmina_icon.h"
 #include "remmina_main.h"
+#include "remmina_exec.h"
 #include "remmina_external_tools.h"
 #include "remmina/remmina_trace_calls.h"
 
@@ -120,20 +121,26 @@ static void remmina_main_save_expanded_group(void)
 gboolean remmina_main_on_delete_event(GtkWidget *widget, GdkEvent *event, gpointer user_data)
 {
 	TRACE_CALL("remmina_main_on_delete_event");
+	remmina_exec_exitremmina();
+	return FALSE;
+}
+
+void remmina_main_save_before_quit()
+{
 	remmina_main_save_size();
 	remmina_main_save_expanded_group();
-	g_free(remmina_pref.expanded_group);
-	remmina_pref.expanded_group = remmina_string_array_to_string(remminamain->priv->expanded_group);
-	remmina_string_array_free(remminamain->priv->expanded_group);
-	remminamain->priv->expanded_group = NULL;
-
 	remmina_pref_save();
-	return FALSE;
 }
 
 void remmina_main_destroy(GtkWidget *widget, gpointer user_data)
 {
 	TRACE_CALL("remmina_main_destroy");
+
+	g_free(remmina_pref.expanded_group);
+	remmina_pref.expanded_group = remmina_string_array_to_string(remminamain->priv->expanded_group);
+	remmina_string_array_free(remminamain->priv->expanded_group);
+	remminamain->priv->expanded_group = NULL;
+
 	g_object_unref(G_OBJECT(remminamain->builder));
 	g_free(remminamain->priv->selected_filename);
 	g_free(remminamain->priv->selected_name);
@@ -597,7 +604,7 @@ void remmina_main_on_action_application_preferences(GtkAction *action, gpointer 
 void remmina_main_on_action_application_quit(GtkAction *action, gpointer user_data)
 {
 	TRACE_CALL("remmina_main_on_action_application_quit");
-	gtk_widget_destroy(GTK_WIDGET(remminamain->window));
+	remmina_exec_exitremmina();
 }
 
 void remmina_main_on_action_view_toolbar(GtkToggleAction *action, gpointer user_data)
